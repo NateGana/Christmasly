@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Christmasly</title>
+<style>
+:root{--g:#123B2A;--g2:#1B5138;--r:#B83232;--gold:#D6AD60;--bg:#FAF8F1;--card:#fff;--tx:#252A26;--mu:#858B83;--bd:#e8e4d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+[data-theme=dark]{--bg:#0d1f17;--card:#16301f;--tx:#f3efe2;--mu:#a3b0a6;--bd:#264a35}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--tx)}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:flex;min-height:100vh}
+.side{width:244px;background:var(--g);color:#f6efd9;padding:16px 10px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0;transition:.2s}
+.side.c{width:64px}.side.c .lb{display:none}
+.logo{font-size:22px;font-weight:700;color:var(--gold);padding:6px 10px 16px;display:flex;justify-content:space-between;align-items:center}
+.nav{display:flex;gap:10px;align-items:center;width:100%;background:none;border:0;color:inherit;padding:10px;border-radius:10px;cursor:pointer;text-align:left}
+.nav:hover{background:var(--g2)}.nav.on{background:var(--r);color:#fff}
+.main{flex:1;min-width:0;padding:22px}
+.top{display:none}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;box-shadow:0 4px 14px rgba(18,59,42,.07)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-bottom:16px}
+.grid2{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-bottom:16px}
+.stat b{display:block;font-size:22px;margin-top:4px}.stat span,.mu{color:var(--mu);font-size:13px}
+h1{margin:0 0 4px;font-size:28px;color:var(--g2)}[data-theme=dark] h1{color:var(--gold)}
+h3{margin:0 0 10px}
+.btn{background:var(--g2);color:#fff;border:0;border-radius:10px;padding:8px 14px;cursor:pointer}
+.btn:hover{transform:translateY(-1px)}.btn.r{background:var(--r)}.btn.o{background:none;color:var(--tx);border:1px solid var(--bd)}.btn.s{padding:4px 9px;font-size:13px}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:10px;background:var(--card)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.bar input,.bar select{width:auto;flex:1;min-width:120px}
+.item{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+.item img{width:64px;height:64px;object-fit:cover;border-radius:10px}
+.item>div{flex:1;min-width:0}.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;margin:4px 0}.meta i{color:var(--mu);font-style:normal}
+.tag{font-size:11px;background:var(--gold);color:#3a2d08;border-radius:20px;padding:2px 8px;margin-left:6px}.tag.st{background:var(--g2);color:#fff}
+.pg{height:10px;background:var(--bd);border-radius:9px;overflow:hidden}.pg div{height:100%;background:linear-gradient(90deg,var(--g2),var(--gold))}
+.warn{padding:10px 14px;border-radius:12px;margin-bottom:14px;color:#fff;background:#c9822a}.warn.d{background:var(--r)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:14px;z-index:50}
+.modal .card{max-height:90vh;overflow:auto;width:min(560px,100%)}
+.fg{display:grid;gap:10px;grid-template-columns:1fr 1fr}.fg .w{grid-column:1/-1}label{font-size:13px;color:var(--mu)}.er{color:var(--r);font-size:12px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal div{min-height:64px;border:1px solid var(--bd);border-radius:8px;padding:3px;font-size:11px;overflow:hidden}.cal .h{min-height:0;text-align:center;border:0;color:var(--mu)}
+.cal small{display:block;background:var(--r);color:#fff;border-radius:4px;padding:0 3px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{display:inline-block;border:1px solid var(--bd);border-radius:20px;padding:4px 10px;margin:3px;font-size:13px;cursor:pointer;background:var(--card)}
+.snow{position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:radial-gradient(#fff 1.5px,transparent 1.5px);background-size:46px 46px}
+@media(max-width:820px){.side{position:fixed;z-index:40;left:0;transform:translateX(-100%);width:244px!important}.side.open{transform:none}.side.c .lb{display:inline}.top{display:flex;gap:10px;align-items:center;margin-bottom:12px}.fg{grid-template-columns:1fr}.main{padding:14px}}
+</style>
+</head>
+<body>
+<div class="snow"></div>
+<div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const {useState,useEffect,useRef}=React;
+const h=htm.bind(React.createElement);
+const KEY='christmasly_v1';
+const uid=()=>Math.random().toString(36).slice(2,9);
+const peso=n=>'₱'+(Number(n)||0).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});
+const sum=(a,f)=>a.reduce((s,x)=>s+(Number(f(x))||0),0);
+const today=()=>new Date().toISOString().slice(0,10);
+const PRI=['Low','Medium','High'];
+const CATS=['Gifts','Food and Groceries','Noche Buena','Christmas Party','Decorations','Clothes and Outfits','Transportation','Travel and Accommodation','Shopping','Donations','Aguinaldo','Other Expenses'];
+const GST=['Idea','To Buy','Purchased','Wrapped','Delivered'];
+const BOUGHT=['Purchased','Wrapped','Delivered'];
+const PAY=['Cash','GCash','Maya','Bank Transfer','Credit Card','Other'];
+const FOOD=['Main Dishes','Pasta and Noodles','Desserts','Drinks','Snacks','Appetizers','Other'];
+const S={
+plans:{t:'Christmas Plans',ti:'name',done:['status','Completed'],sum:['est','act'],fl:[['name','Activity name','text',0,1],['type','Category','sel',['Christmas Eve','Christmas Day','Noche Buena','Family Gathering','Christmas Party','Exchange Gift','Christmas Reunion','Simbang Gabi','Christmas Shopping','Christmas Decorations','Christmas Vacation',"New Year's Preparation",'Custom Activity']],['date','Date','date',0,1],['start','Start time','time'],['end','End time','time'],['place','Location'],['people','People involved'],['est','Estimated budget','num'],['act','Actual cost','num'],['pri','Priority','sel',PRI],['status','Status','sel',['Not Started','Planning','In Progress','Completed','Cancelled']],['notes','Notes','area']]},
+expenses:{t:'Expenses',ti:'name',fl:[['name','Expense name','text',0,1],['cat','Category','sel',d=>[...CATS,...d.cats]],['amt','Amount (₱)','num',0,1],['date','Date','date',0,1],['pay','Payment method','sel',PAY],['rel','Related activity'],['status','Status','sel',['Planned','Paid','Cancelled']],['desc','Description','area']]},
+people:{t:'Recipients',ti:'name',fl:[['name','Name','text',0,1],['rel','Relationship'],['age','Age','int'],['int','Interests'],['pref','Preferences'],['budget','Gift budget','num'],['notes','Gift notes','area']]},
+gifts:{t:'Gift Ideas',ti:'name',done:['status','Purchased'],sum:['price'],fl:[['name','Gift name','text',0,1],['who','Recipient','sel',d=>['',...d.people.map(p=>p.name)]],['price','Estimated price','num'],['status','Status','sel',GST],['pri','Priority','sel',PRI],['link','Store / link'],['img','Image URL'],['exp','Expense link','sel',d=>[['','No expense linked'],['new','Create new paid expense (when purchased)'],...d.expenses.map(e=>[e.id,e.name+' '+peso(e.amt)])]],['desc','Description','area'],['notes','Notes','area']]},
+wish:{t:'Wishlist',ti:'name',sum:['price'],fl:[['name','Item name','text',0,1],['cat','Category'],['price','Estimated price','num'],['pri','Priority','sel',PRI],['status','Status','sel',['Wanted','Purchased','Received']],['link','Product link'],['img','Image URL'],['desc','Description','area'],['notes','Notes','area']]},
+shop:{t:'Shopping List',ti:'name',done:['status','Purchased'],sum:['est','act'],fl:[['name','Item name','text',0,1],['qty','Quantity','int',0,1],['cat','Category','sel',['Grocery','Noche Buena Ingredients','Gifts','Decorations','Christmas Party Supplies','Clothes','Personal Items','Travel Essentials','Other']],['est','Estimated price','num'],['act','Actual price','num'],['store','Store'],['status','Status','sel',['To Buy','Purchased']],['notes','Notes','area']]},
+menu:{t:'Menu',ti:'name',done:['status','Ready'],sum:['est','act'],fl:[['name','Dish name','text',0,1],['cat','Category','sel',FOOD],['who','Assigned person'],['est','Estimated cost','num'],['act','Actual cost','num'],['status','Preparation status','sel',['Not Started','Preparing','Ready']],['img','Image URL'],['ing','Ingredients','area'],['desc','Description','area'],['notes','Notes','area']]},
+events:{t:'Events',ti:'title',sum:['est'],fl:[['title','Title','text',0,1],['date','Date','date',0,1],['time','Time','time'],['place','Location'],['est','Estimated cost','num'],['remind','Reminder','sel',['None','1 day before','1 week before','On the day']],['people','Participants'],['desc','Description','area']]},
+deco:{t:'Decorations',ti:'name',done:['status','Purchased'],sum:['est'],fl:[['name','Decoration','text',0,1],['cat','Category','sel',['Christmas Tree','Parol','Christmas Lights','Christmas Wreath','Nativity Scene','Table Decorations','Outdoor Decorations','Other']],['est','Estimated cost','num'],['status','Status','sel',['Idea','To Buy','Purchased','Installed']],['img','Image URL'],['notes','Notes','area']]},
+trips:{t:'Trips',ti:'dest',sum:['budget','cT','cS','cF','cA','cO'],fl:[['dest','Destination','text',0,1],['from','Start date','date'],['to','End date','date'],['people','People joining'],['trans','Transportation'],['acc','Accommodation'],['budget','Estimated budget','num'],['cT','Actual: transport','num'],['cS','Actual: accommodation','num'],['cF','Actual: food','num'],['cA','Actual: activities','num'],['cO','Actual: other','num'],['pack','Packing checklist','area'],['notes','Notes','area']]},
+tasks:{t:'Checklist',ti:'name',done:['status','Done'],fl:[['name','Task','text',0,1],['due','Due date','date'],['pri','Priority','sel',PRI],['status','Status','sel',['Open','Done']],['notes','Notes','area']]},
+mem:{t:'Memories',ti:'title',fl:[['title','Title','text',0,1],['date','Date','date',0,1],['img','Photo URL'],['desc','Description','area']]}
+};
+const m=o=>({id:uid(),demo:true,...o});
+const demo=()=>({
+cats:[],
+plans:[m({name:'Noche Buena at Home',type:'Noche Buena',date:'2026-12-24',start:'22:00',end:'01:00',place:'Home',people:'Family',est:8000,act:0,pri:'High',status:'Planning'}),m({name:'Simbang Gabi Day 1',type:'Simbang Gabi',date:'2026-12-16',start:'04:00',end:'06:00',place:'Parish Church',people:'Family',est:300,act:0,pri:'Medium',status:'Not Started'}),m({name:'Family Reunion',type:'Christmas Reunion',date:'2026-12-25',start:'12:00',end:'17:00',place:'Lola\'s house',people:'Relatives',est:3000,act:0,pri:'Medium',status:'Not Started'})],
+expenses:[m({name:'Gift for Mom',cat:'Gifts',amt:2500,date:'2026-11-05',pay:'GCash',status:'Paid'}),m({name:'Ham and Queso de Bola',cat:'Noche Buena',amt:3200,date:'2026-11-08',pay:'Cash',status:'Paid'}),m({name:'Parol and lights',cat:'Decorations',amt:1800,date:'2026-11-02',pay:'Maya',status:'Paid'}),m({name:'Lechon order',cat:'Noche Buena',amt:6000,date:'2026-12-20',pay:'Cash',status:'Planned'}),m({name:'Aguinaldo for inaanaks',cat:'Aguinaldo',amt:2000,date:'2026-12-25',pay:'Cash',status:'Planned'})],
+people:[m({name:'Mom',rel:'Mother',age:58,int:'Gardening, cooking',budget:3000}),m({name:'Dad',rel:'Father',age:60,int:'Fishing',budget:3000}),m({name:'Ana',rel:'Inaanak',age:7,int:'Drawing',budget:800})],
+gifts:[m({name:'Gardening tool set',who:'Mom',price:2500,status:'Purchased',pri:'High',exp:''}),m({name:'Fishing reel',who:'Dad',price:2800,status:'To Buy',pri:'Medium',exp:''}),m({name:'Art set',who:'Ana',price:700,status:'Idea',pri:'Low',exp:''})],
+wish:[m({name:'Wireless earbuds',cat:'Gadgets',price:2500,pri:'High',status:'Wanted'}),m({name:'Cozy blanket',cat:'Home',price:900,pri:'Low',status:'Wanted'})],
+shop:[m({name:'Spaghetti noodles',qty:4,cat:'Noche Buena Ingredients',est:360,act:0,store:'Supermarket',status:'To Buy'}),m({name:'Gift wrapper',qty:6,cat:'Gifts',est:180,act:165,store:'National Bookstore',status:'Purchased'}),m({name:'Fruit cocktail',qty:5,cat:'Noche Buena Ingredients',est:450,act:0,store:'Supermarket',status:'To Buy'})],
+menu:[m({name:'Spaghetti',cat:'Pasta and Noodles',who:'Mom',est:1200,act:0,status:'Not Started'}),m({name:'Ham',cat:'Main Dishes',who:'Dad',est:3500,act:3200,status:'Ready'}),m({name:'Fruit Salad',cat:'Desserts',who:'Ate',est:700,act:0,status:'Not Started'})],
+events:[m({title:'Office Christmas Party',date:'2026-12-18',time:'18:00',place:'Hotel ballroom',est:500,remind:'1 day before',people:'Coworkers'}),m({title:'Grocery Day',date:'2026-12-22',time:'09:00',place:'Supermarket',est:5000,remind:'On the day',people:'Me'})],
+deco:[m({name:'Christmas tree 6ft',cat:'Christmas Tree',est:2500,status:'To Buy'}),m({name:'Capiz parol',cat:'Parol',est:800,status:'Purchased'})],
+trips:[m({dest:'Baguio',from:'2026-12-27',to:'2026-12-29',people:'Family',trans:'Bus',acc:'Transient house',budget:12000,cT:0,cS:0,cF:0,cA:0,cO:0,pack:'Jackets, toiletries'})],
+tasks:[m({name:'Set Christmas budget',due:'2026-11-15',pri:'High',status:'Done'}),m({name:'Buy gifts',due:'2026-12-15',pri:'High',status:'Open'}),m({name:'Wrap gifts',due:'2026-12-22',pri:'Medium',status:'Open'}),m({name:'Plan Noche Buena menu',due:'2026-12-10',pri:'Medium',status:'Open'}),m({name:'Decorate the house',due:'2026-12-01',pri:'Medium',status:'Open'})],
+mem:[m({title:'Last Christmas Eve',date:'2025-12-24',desc:'Sample memory: we ate together and sang karaoke.'})],
+settings:{name:'Friend',year:2026,budget:30000,savings:10000,income:5000,start:'2026-11-01',end:'2026-12-31',notes:'',theme:'light',w1:70,w2:90,notify:true}
+});
+const load=()=>{try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return demo()};
+const fin=d=>{const ex=d.expenses,b=+d.settings.budget||0;const actual=sum(ex.filter(e=>e.status==='Paid'),e=>e.amt);return{b,actual,planned:sum(ex.filter(e=>e.status!=='Cancelled'),e=>e.amt),unpaid:sum(ex.filter(e=>e.status==='Planned'),e=>e.amt),rem:b-actual,pct:b?actual/b*100:0}};
+const pct=(a,f)=>a.length?Math.round(a.filter(f).length/a.length*100):0;
+const toCSV=(rows,cols)=>[cols.map(c=>c[1]),...rows.map(r=>cols.map(c=>r[c[0]]))].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');
+
+function Ch({type,labels,sets,opt}){
+const r=useRef();
+useEffect(()=>{const c=new Chart(r.current,{type,data:{labels,datasets:sets},options:{responsive:true,maintainAspectRatio:false,...opt}});return()=>c.destroy()},[JSON.stringify([type,labels,sets])]);
+return h`<div style="height:240px"><canvas ref=${r}></canvas></div>`;
+}
+const PAL=['#123B2A','#B83232','#D6AD60','#1B5138','#e07a5f','#81b29a','#6d597a','#3d405b','#f2cc8f','#9c6644','#588157','#8d99ae','#bc4749'];
+const Prog=({v})=>h`<div class="pg"><div style=${{width:v+'%'}}></div></div>`;
+const Stat=({l,v})=>h`<div class="card stat"><span>${l}</span><b>${v}</b></div>`;
+const Head=({t,s,children})=>h`<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><h1>${t}</h1><div class="mu" style="margin-bottom:14px">${s}</div></div><div>${children}</div></div>`;
+
+function Out({title,text,fname,onClose}){
+const url=URL.createObjectURL(new Blob([text],{type:'text/plain'}));
+return h`<div class="modal"><div class="card"><h3>${title}</h3><p class="mu">Copy the text below or try the download link.</p><textarea rows="10" readonly value=${text} onFocus=${e=>e.target.select()}></textarea><div class="bar"><a class="btn" href=${url} download=${fname}>Download ${fname}</a><button class="btn o" onClick=${onClose}>Close</button></div></div></div>`;
+}
+
+function Form({c,d,init,onSave,onCancel}){
+const [v,setV]=useState(init);const [er,setEr]=useState({});
+const go=()=>{const e={};c.fl.forEach(([k,l,t,o,r])=>{const x=v[k];if(r&&!String(x??'').trim())e[k]='Required';else if(x!==''&&x!=null){if((t==='num'||t==='int')&&(isNaN(+x)||+x<0))e[k]='Enter a valid number';if(t==='date'&&isNaN(Date.parse(x)))e[k]='Invalid date'}});setEr(e);if(!Object.keys(e).length)onSave(v)};
+return h`<div class="modal"><div class="card"><h3>${init.id?'Edit':'Add'} ${c.t}</h3><div class="fg">${c.fl.map(([k,l,t='text',o,r])=>{
+const set=e=>setV({...v,[k]:e.target.value});const val=v[k]??'';
+const opts=typeof o==='function'?o(d):o;
+return h`<div class=${t==='area'?'w':''}><label>${l}${r?' *':''}</label>${t==='sel'?h`<select value=${val} onChange=${set}>${(k==='who'||k==='cat'&&c.t==='Expenses'?[]:['']).concat(opts).map(x=>Array.isArray(x)?h`<option value=${x[0]}>${x[1]}</option>`:h`<option value=${x}>${x||'—'}</option>`)}</select>`:t==='area'?h`<textarea rows="2" value=${val} onChange=${set}></textarea>`:h`<input type=${t==='num'||t==='int'?'number':t} min="0" step=${t==='num'?'0.01':'1'} value=${val} onChange=${set}/>`}${er[k]&&h`<div class="er">${er[k]}</div>`}</div>`})}</div><div class="bar"><button class="btn" onClick=${go}>Save</button><button class="btn o" onClick=${onCancel}>Cancel</button></div></div></div>`;
+}
+
+function Coll({k,d,setD,add}){
+const c=S[k];
+const blank=()=>{const o={};c.fl.forEach(f=>{const t=f[2],op=typeof f[3]==='function'?f[3](d):f[3];o[f[0]]=t==='sel'?(Array.isArray(op[0])?op[0][0]:op[0]):t==='date'&&f[0]!=='from'&&f[0]!=='to'&&f[0]!=='due'?today():''});return o};
+const [q,setQ]=useState('');const [st,setSt]=useState('');const [sr,setSr]=useState('');const [ed,setEd]=useState(add?blank():null);const [cd,setCd]=useState(null);
+const stf=c.fl.find(f=>f[0]==='status');const df=c.fl.find(f=>f[2]==='date');
+const items=d[k].filter(x=>(!q||JSON.stringify(Object.values(x)).toLowerCase().includes(q.toLowerCase()))&&(!st||x.status===st));
+if(sr==='Name')items.sort((a,b)=>String(a[c.ti]).localeCompare(b[c.ti]));
+if(sr==='Date'&&df)items.sort((a,b)=>String(a[df[0]]).localeCompare(b[df[0]]));
+const upd=fn=>setD(p=>({...p,[k]:fn(p[k])}));
+const save=v=>{const it={...v,demo:false};c.fl.forEach(f=>{if(f[2]==='num'||f[2]==='int')it[f[0]]=Number(it[f[0]]||0)});
+setD(p=>{let ex=p.expenses;
+if(k==='gifts'&&it.exp==='new'){if(BOUGHT.includes(it.status)){const e={id:uid(),name:'Gift: '+it.name,cat:'Gifts',amt:it.price,date:today(),pay:'Cash',desc:'Created from gift',rel:'',status:'Paid'};ex=[e,...ex];it.exp=e.id}else it.exp=''}
+it.id=it.id||uid();
+const l=p[k];return{...p,expenses:ex,[k]:l.some(x=>x.id===it.id)?l.map(x=>x.id===it.id?it:x):[it,...l]}});setEd(null)};
+const fmt=(f,x)=>f[2]==='num'?peso(x):x;
+const sumf=c.sum&&c.sum.map(f=>{const fd=c.fl.find(z=>z[0]===f);const src=c.done&&(f==='act')?items.filter(x=>x[c.done[0]]===c.done[1]):items;return[fd[1],sum(src,x=>x[f])]});
+return h`<div>
+${c.done&&h`<div class="card" style="margin-bottom:12px"><div class="mu">Progress: ${pct(d[k],x=>x[c.done[0]]===c.done[1])}% done · ${d[k].filter(x=>x[c.done[0]]!==c.done[1]).length} remaining</div><${Prog} v=${pct(d[k],x=>x[c.done[0]]===c.done[1])}/></div>`}
+${sumf&&h`<div class="grid">${sumf.map(s=>h`<${Stat} l=${s[0]+' total'} v=${peso(s[1])}/>`)}</div>`}
+<div class="bar"><input placeholder="Search..." value=${q} onInput=${e=>setQ(e.target.value)}/>${stf&&h`<select value=${st} onChange=${e=>setSt(e.target.value)}><option value="">All statuses</option>${stf[3].map(o=>h`<option>${o}</option>`)}</select>`}<select value=${sr} onChange=${e=>setSr(e.target.value)}><option value="">Sort: added</option><option>Name</option>${df&&h`<option>Date</option>`}</select><button class="btn r" onClick=${()=>setEd(blank())}>+ Add</button></div>
+${!items.length&&h`<div class="card" style="text-align:center;padding:30px">🎄 Nothing here yet. Add your first ${c.t.toLowerCase()} entry.</div>`}
+${items.map(x=>h`<div class="card item" key=${x.id}>${x.img&&h`<img src=${x.img} onError=${e=>e.target.style.display='none'}/>`}<div><b>${x[c.ti]}</b>${x.demo&&h`<span class="tag">Demo</span>`}${x.status&&h`<span class="tag st">${x.status}</span>`}<div class="meta">${c.fl.filter(f=>![c.ti,'status','img','exp'].includes(f[0])&&x[f[0]]!==''&&x[f[0]]!=null&&x[f[0]]!==0).map(f=>h`<span><i>${f[1]}:</i> ${fmt(f,x[f[0]])}</span>`)}</div>
+<div>${c.done&&x[c.done[0]]!==c.done[1]&&h`<button class="btn s" onClick=${()=>upd(l=>l.map(y=>y.id===x.id?{...y,[c.done[0]]:c.done[1]}:y))}>✓ Mark ${c.done[1]}</button> `}<button class="btn o s" onClick=${()=>setEd(x)}>Edit</button> <button class="btn o s" onClick=${()=>{if(cd===x.id){upd(l=>l.filter(y=>y.id!==x.id));setCd(null)}else setCd(x.id)}}>${cd===x.id?'Confirm delete?':'Delete'}</button></div></div></div>`)}
+${ed&&h`<${Form} c=${c} d=${d} init=${ed} onSave=${save} onCancel=${()=>setEd(null)}/>`}
+</div>`;
+}
+
+function Dash({d,go}){
+const f=fin(d),s=d.settings;const n=new Date();let x=new Date(n.getFullYear(),11,25,23,59,59);if(n>x)x=new Date(n.getFullYear()+1,11,25);
+const days=Math.ceil((x-n)/864e5);
+const up=[...d.plans.map(p=>({t:p.name,date:p.date})),...d.events.map(e=>({t:e.title,date:e.date}))].filter(e=>e.date>=today()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+const toBuy=d.gifts.filter(g=>!BOUGHT.includes(g.status)).length;
+const sp=pct(d.shop,x=>x.status==='Purchased'),tp=pct(d.tasks,x=>x.status==='Done'),gp=pct(d.gifts,g=>BOUGHT.includes(g.status));
+const prep=Math.round((sp+tp+gp)/3);
+return h`<div><${Head} t=${'Merry Christmas, '+s.name+' 🎅'} s="Your Christmas preparation at a glance"/>
+<div class="card" style="background:var(--g);color:#fff;margin-bottom:16px"><div style="font-size:42px;color:var(--gold)">${days} days</div><div>until Christmas ${x.getFullYear()} · Preparation ${prep}%</div><div style="margin-top:8px"><${Prog} v=${prep}/></div></div>
+<div class="grid"><${Stat} l="Total budget" v=${peso(f.b)}/><${Stat} l="Planned expenses" v=${peso(f.planned)}/><${Stat} l="Actual (paid)" v=${peso(f.actual)}/><${Stat} l="Remaining budget" v=${peso(f.rem)}/><${Stat} l="Gifts to buy" v=${toBuy}/><${Stat} l="Gifts purchased" v=${d.gifts.length-toBuy}/><${Stat} l="Activities" v=${d.plans.length}/><${Stat} l="Shopping progress" v=${sp+'%'}/></div>
+<div class="card" style="margin-bottom:16px"><h3>Quick actions</h3><button class="btn r s" onClick=${()=>go('plans',1)}>Create Christmas Plan</button> <button class="btn s" onClick=${()=>go('fin',1)}>Add Expense</button> <button class="btn s" onClick=${()=>go('gift',1)}>Add Gift Idea</button> <button class="btn s" onClick=${()=>go('cal',1)}>Add Activity</button> <button class="btn s" onClick=${()=>go('shop',1)}>Create Shopping List Item</button></div>
+<div class="grid2"><div class="card"><h3>Upcoming activities and events</h3>${up.length?up.map(e=>h`<div>${e.date} — ${e.t}</div>`):h`<div class="mu">None upcoming</div>`}</div>
+<div class="card"><h3>Recent expenses</h3>${d.expenses.slice(0,5).map(e=>h`<div>${e.name} · ${peso(e.amt)} <span class="tag st">${e.status}</span></div>`)}</div>
+<div class="card"><h3>Checklist (${tp}%)</h3><${Prog} v=${tp}/>${d.tasks.filter(t=>t.status!=='Done').slice(0,5).map(t=>h`<div>☐ ${t.name}</div>`)}</div></div></div>`;
+}
+
+function Fin({d,setD,add}){
+const f=fin(d),s=d.settings;const [o,setO]=useState(null);const [nc,setNc]=useState('');
+const cats=[...CATS,...d.cats];const paid=d.expenses.filter(e=>e.status==='Paid');
+const bycat=cats.map(c=>sum(paid.filter(e=>e.cat===c),e=>e.amt));
+const plc=cats.map(c=>sum(d.expenses.filter(e=>e.cat===c&&e.status!=='Cancelled'),e=>e.amt));
+const mo={};paid.forEach(e=>{const k=e.date.slice(0,7);mo[k]=(mo[k]||0)+e.amt});const mk=Object.keys(mo).sort();
+const top=cats[bycat.indexOf(Math.max(...bycat))];
+const set=k=>e=>setD(p=>({...p,settings:{...p.settings,[k]:e.target.type==='number'?+e.target.value:e.target.value}}));
+return h`<div><${Head} t="Budget & Expenses" s="Planned expenses are tracked separately from actual paid spending"><button class="btn o" onClick=${()=>setO(toCSV(d.expenses,[['name','Name'],['cat','Category'],['amt','Amount'],['date','Date'],['pay','Payment'],['rel','Activity'],['status','Status'],['desc','Description']]))}>Export CSV</button><//>
+${f.pct>=100?h`<div class="warn d">Actual expenses exceed your budget.</div>`:f.pct>=s.w2?h`<div class="warn d">You have used ${f.pct.toFixed(0)}% of your budget (limit ${s.w2}%).</div>`:f.pct>=s.w1?h`<div class="warn">You have used ${f.pct.toFixed(0)}% of your budget (limit ${s.w1}%).</div>`:null}
+<div class="grid"><${Stat} l="Total budget" v=${peso(f.b)}/><${Stat} l="Planned (planned + paid)" v=${peso(f.planned)}/><${Stat} l="Actual (paid only)" v=${peso(f.actual)}/><${Stat} l="Remaining" v=${peso(f.rem)}/><${Stat} l="Unpaid" v=${peso(f.unpaid)}/><${Stat} l="Spending" v=${f.pct.toFixed(1)+'%'}/><${Stat} l="Top category" v=${Math.max(...bycat)>0?top:'—'}/></div>
+<div class="card" style="margin-bottom:16px"><h3>Budget setup</h3><div class="fg"><div><label>Total budget</label><input type="number" min="0" value=${s.budget} onChange=${set('budget')}/></div><div><label>Available savings</label><input type="number" min="0" value=${s.savings} onChange=${set('savings')}/></div><div><label>Expected additional income</label><input type="number" min="0" value=${s.income} onChange=${set('income')}/></div><div><label>Start</label><input type="date" value=${s.start} onChange=${set('start')}/></div><div><label>End</label><input type="date" value=${s.end} onChange=${set('end')}/></div><div><label>Financial notes</label><input value=${s.notes} onChange=${set('notes')}/></div></div>
+<div class="bar"><input placeholder="New custom category" value=${nc} onInput=${e=>setNc(e.target.value)}/><button class="btn s" onClick=${()=>{if(nc.trim()&&!cats.includes(nc.trim())){setD(p=>({...p,cats:[...p.cats,nc.trim()]}));setNc('')}}}>Add category</button></div></div>
+<div class="grid2"><div class="card"><h3>Paid by category</h3><${Ch} type="doughnut" labels=${cats} sets=${[{data:bycat,backgroundColor:PAL}]}/></div><div class="card"><h3>Planned vs actual</h3><${Ch} type="bar" labels=${cats} sets=${[{label:'Planned',data:plc,backgroundColor:'#D6AD60'},{label:'Actual',data:bycat,backgroundColor:'#B83232'}]}/></div><div class="card"><h3>Monthly spending</h3><${Ch} type="line" labels=${mk} sets=${[{label:'Paid',data:mk.map(k=>mo[k]),borderColor:'#1B5138'}]}/></div><div class="card"><h3>Budget remaining</h3><${Ch} type="doughnut" labels=${['Spent','Remaining']} sets=${[{data:[f.actual,Math.max(f.rem,0)],backgroundColor:['#B83232','#1B5138']}]}/></div></div>
+<${Coll} k="expenses" d=${d} setD=${setD} add=${add}/>${o!==null&&h`<${Out} title="Expenses CSV" text=${o} fname="christmasly-expenses.csv" onClose=${()=>setO(null)}/>`}</div>`;
+}
+
+const SUG=[['Gifts for Mom','Scented candle set',500],['Gifts for Dad','Leather wallet',900],['Gifts for Friends','Mug and cocoa set',350],['Gifts for Kids','Storybook bundle',450],['Gifts for Inaanaks','Coloring set',250],['Affordable Gifts','Handwritten card + snacks',150],['Personalized Gifts','Photo frame',600],['Practical Gifts','Tumbler',700]];
+function Gift({d,setD,add}){
+const g=d.gifts;const paid=sum(d.expenses.filter(e=>e.cat==='Gifts'&&e.status==='Paid'),e=>e.amt);const gb=sum(d.people,p=>p.budget);
+return h`<div><${Head} t="Gift Organizer" s="Recipients, ideas and gift budget"/>
+<div class="grid"><${Stat} l="Gift budget" v=${peso(gb)}/><${Stat} l="Estimated gift costs" v=${peso(sum(g,x=>x.price))}/><${Stat} l="Actual gift spending (paid expenses)" v=${peso(paid)}/><${Stat} l="Remaining gift budget" v=${peso(gb-paid)}/><${Stat} l="Recipients" v=${d.people.length}/><${Stat} l="Purchased" v=${g.filter(x=>BOUGHT.includes(x.status)).length}/><${Stat} l="Still to buy" v=${g.filter(x=>!BOUGHT.includes(x.status)).length}/></div>
+<div class="card" style="margin-bottom:16px"><h3>Inspiration</h3><div class="mu">Sample suggestions only. Prices are editable estimates, not live shop prices. Tap to save as an idea.</div>${SUG.map(s=>h`<span class="chip" onClick=${()=>setD(p=>({...p,gifts:[m({name:s[1],who:'',price:s[2],status:'Idea',pri:'Medium',exp:'',notes:s[0]}),...p.gifts]}))}>${s[0]}: ${s[1]} (${peso(s[2])})</span>`)}</div>
+<h3>Recipients</h3><${Coll} k="people" d=${d} setD=${setD}/><h3 style="margin-top:20px">Gift ideas</h3><${Coll} k="gifts" d=${d} setD=${setD} add=${add}/></div>`;
+}
+
+const DISH=[['Spaghetti','Pasta and Noodles',1200],['Ham','Main Dishes',3500],['Queso de Bola','Appetizers',900],['Lechon','Main Dishes',6000],['Lumpia','Appetizers',800],['Fruit Salad','Desserts',700],['Pancit','Pasta and Noodles',900],['Barbecue','Main Dishes',1500],['Bibingka','Desserts',600],['Puto Bumbong','Desserts',500]];
+function Menu({d,setD,add}){
+return h`<div><${Head} t="Noche Buena Menu" s=${'Food budget (estimated): '+peso(sum(d.menu,x=>x.est))}/>
+<div class="card" style="margin-bottom:14px"><div class="mu">Sample dishes with editable estimated costs. Tap to add.</div>${DISH.map(x=>h`<span class="chip" onClick=${()=>setD(p=>({...p,menu:[m({name:x[0],cat:x[1],est:x[2],act:0,who:'',status:'Not Started'}),...p.menu]}))}>+ ${x[0]}</span>`)}</div><${Coll} k="menu" d=${d} setD=${setD} add=${add}/></div>`;
+}
+
+function Cal({d,setD,add}){
+const [dt,setDt]=useState(new Date(2026,11,1));
+const y=dt.getFullYear(),mo=dt.getMonth();const first=new Date(y,mo,1).getDay(),n=new Date(y,mo+1,0).getDate();
+const ev=[...d.plans.map(p=>({t:p.name,date:p.date})),...d.events.map(e=>({t:e.title,date:e.date}))];
+const cells=[...Array(first).fill(0),...Array.from({length:n},(_,i)=>i+1)];
+return h`<div><${Head} t="Calendar" s="Plans and events by date"/>
+<div class="card" style="margin-bottom:16px"><div class="bar"><button class="btn o s" onClick=${()=>setDt(new Date(y,mo-1,1))}>◀</button><b style="flex:2;text-align:center">${dt.toLocaleString('en',{month:'long',year:'numeric'})}</b><button class="btn o s" onClick=${()=>setDt(new Date(y,mo+1,1))}>▶</button></div>
+<div class="cal">${['S','M','T','W','T','F','S'].map(x=>h`<div class="h">${x}</div>`)}${cells.map(c=>{const ds=c?y+'-'+String(mo+1).padStart(2,'0')+'-'+String(c).padStart(2,'0'):'';return h`<div style=${c?'':'border:0'}>${c||''}${c&&ev.filter(e=>e.date===ds).map(e=>h`<small>${e.t}</small>`)}</div>`})}</div></div>
+<${Coll} k="events" d=${d} setD=${setD} add=${add}/></div>`;
+}
+
+function Rep({d}){
+const f=fin(d);const [o,setO]=useState(null);const cats=[...CATS,...d.cats];const paid=d.expenses.filter(e=>e.status==='Paid');
+const by=cats.map(c=>sum(paid.filter(e=>e.cat===c),e=>e.amt));
+return h`<div><${Head} t="Reports" s="Complete Christmas overview"><button class="btn o s" onClick=${()=>setO(['Expenses',toCSV(d.expenses,[['name','Name'],['cat','Category'],['amt','Amount'],['date','Date'],['pay','Payment'],['status','Status']])])}>Export expenses CSV</button> <button class="btn o s" onClick=${()=>setO(['Shopping',toCSV(d.shop,[['name','Item'],['qty','Qty'],['cat','Category'],['est','Estimated'],['act','Actual'],['store','Store'],['status','Status']])])}>Export shopping CSV</button><//>
+<div class="grid"><${Stat} l="Total budget" v=${peso(f.b)}/><${Stat} l="Actual spending" v=${peso(f.actual)}/><${Stat} l="Planned expenses" v=${peso(f.planned)}/><${Stat} l="Remaining" v=${peso(f.rem)}/><${Stat} l="Paid expenses" v=${paid.length}/><${Stat} l="Unpaid expenses" v=${peso(f.unpaid)}/><${Stat} l="Gifts purchased" v=${d.gifts.filter(g=>BOUGHT.includes(g.status)).length}/><${Stat} l="Recipients" v=${d.people.length}/><${Stat} l="Activities" v=${d.plans.length}/><${Stat} l="Shopping completion" v=${pct(d.shop,x=>x.status==='Purchased')+'%'}/><${Stat} l="Noche Buena budget (est.)" v=${peso(sum(d.menu,x=>x.est))}/><${Stat} l="Travel actual" v=${peso(sum(d.trips,t=>t.cT+t.cS+t.cF+t.cA+t.cO))}/></div>
+<div class="card"><h3>Spending breakdown</h3><${Ch} type="bar" labels=${cats} sets=${[{label:'Paid',data:by,backgroundColor:PAL}]} opt=${{plugins:{legend:{display:false}}}}/></div>
+${o&&h`<${Out} title=${o[0]+' CSV'} text=${o[1]} fname=${'christmasly-'+o[0].toLowerCase()+'.csv'} onClose=${()=>setO(null)}/>`}</div>`;
+}
+
+function Set({d,setD}){
+const s=d.settings;const [o,setO]=useState(null);const [imp,setImp]=useState('');const [msg,setMsg]=useState('');const [cf,setCf]=useState('');
+const set=k=>e=>setD(p=>({...p,settings:{...p.settings,[k]:e.target.type==='number'?+e.target.value:e.target.type==='checkbox'?e.target.checked:e.target.value}}));
+const doImp=()=>{try{const j=JSON.parse(imp);if(!j.settings||!j.expenses)throw 0;setD(j);setMsg('Imported successfully.');setImp('')}catch(e){setMsg('That is not a valid Christmasly backup.')}};
+const files=e=>{const r=new FileReader();r.onload=()=>setImp(r.result);if(e.target.files[0])r.readAsText(e.target.files[0])};
+return h`<div><${Head} t="Settings" s="Personalize Christmasly"/>
+<div class="card" style="margin-bottom:16px"><div class="fg"><div><label>Display name</label><input value=${s.name} onChange=${set('name')}/></div><div><label>Celebration year</label><input type="number" value=${s.year} onChange=${set('year')}/></div><div><label>Currency</label><input value="Philippine Peso (₱)" disabled/></div><div><label>Total budget</label><input type="number" min="0" value=${s.budget} onChange=${set('budget')}/></div><div><label>Theme</label><select value=${s.theme} onChange=${set('theme')}><option value="light">Christmas Light</option><option value="dark">Christmas Dark</option></select></div><div><label>First warning (%)</label><input type="number" min="1" max="100" value=${s.w1} onChange=${set('w1')}/></div><div><label>Second warning (%)</label><input type="number" min="1" max="100" value=${s.w2} onChange=${set('w2')}/></div><div><label>Notifications</label><label><input type="checkbox" style="width:auto" checked=${s.notify} onChange=${set('notify')}/> Show reminders in app</label></div></div></div>
+<div class="card"><h3>Data management</h3><div class="bar"><button class="btn" onClick=${()=>setO(JSON.stringify(d,null,2))}>Export JSON</button><button class="btn o" onClick=${()=>cf==='demo'?(setD(demo()),setCf(''),setMsg('Demo data restored.')):setCf('demo')}>${cf==='demo'?'Confirm reset demo data?':'Reset demo data'}</button><button class="btn r" onClick=${()=>{if(cf==='clear'){const e=demo();Object.keys(e).forEach(k=>{if(Array.isArray(e[k]))e[k]=[]});e.settings=d.settings;setD(e);setCf('');setMsg('All personal data cleared.')}else setCf('clear')}}>${cf==='clear'?'Confirm clear ALL data?':'Clear all data'}</button>${cf&&h`<button class="btn o" onClick=${()=>setCf('')}>Cancel</button>`}</div>
+<label>Import JSON backup (file or paste)</label><input type="file" accept=".json" onChange=${files}/><textarea rows="4" value=${imp} onInput=${e=>setImp(e.target.value)}></textarea><div class="bar"><button class="btn" onClick=${doImp}>Import</button></div>${msg&&h`<div class="mu">${msg}</div>`}</div>
+${o&&h`<${Out} title="JSON backup" text=${o} fname="christmasly-backup.json" onClose=${()=>setO(null)}/>`}</div>`;
+}
+
+const PG=[['dash','Dashboard','🏠'],['plans','Christmas Plans','🎄'],['fin','Budget & Expenses','💰'],['gift','Gift Organizer','🎁'],['wish','Wishlist','⭐'],['shop','Shopping List','🛒'],['menu','Noche Buena Menu','🍽️'],['cal','Calendar','📅'],['deco','Decorations','🔔'],['trip','Travel Planner','✈️'],['task','Christmas Checklist','✅'],['mem','Memories','📷'],['rep','Reports','📊'],['set','Settings','⚙️']];
+const GEN={plans:['plans','Christmas Plans','List view; see the Calendar page for the monthly view'],wish:['wish','Wishlist','Things you would love to receive or buy'],shop:['shop','Shopping List','Estimated vs actual costs'],deco:['deco','Decoration Planner','Ideas, costs and checklist'],trip:['trips','Travel Planner','Trips and outings'],task:['tasks','Christmas Checklist','Master checklist'],mem:['mem','Memories','Private by default. Stored only in this browser']};
+
+function App(){
+const [d,setD]=useState(load);const [nav,setNav]=useState({p:'dash'});const [col,setCol]=useState(false);const [dr,setDr]=useState(false);
+useEffect(()=>{try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}},[d]);
+useEffect(()=>{document.documentElement.dataset.theme=d.settings.theme},[d.settings.theme]);
+const go=(p,add)=>{setNav({p,add:!!add,n:Date.now()});setDr(false)};
+const p=nav.p;const ad=nav.add;
+let body;
+if(p==='dash')body=h`<${Dash} d=${d} go=${go}/>`;
+else if(p==='fin')body=h`<${Fin} d=${d} setD=${setD} add=${ad}/>`;
+else if(p==='gift')body=h`<${Gift} d=${d} setD=${setD} add=${ad}/>`;
+else if(p==='menu')body=h`<${Menu} d=${d} setD=${setD} add=${ad}/>`;
+else if(p==='cal')body=h`<${Cal} d=${d} setD=${setD} add=${ad}/>`;
+else if(p==='rep')body=h`<${Rep} d=${d}/>`;
+else if(p==='set')body=h`<${Set} d=${d} setD=${setD}/>`;
+else{const g=GEN[p];body=h`<div><${Head} t=${g[1]} s=${g[2]}/><${Coll} k=${g[0]} d=${d} setD=${setD} add=${ad}/></div>`}
+return h`<div class="app"><aside class=${'side'+(col?' c':'')+(dr?' open':'')}><div class="logo"><span>🎄 <span class="lb">Christmasly</span></span><button class="nav" style="width:auto;padding:4px 8px" onClick=${()=>setCol(!col)}>☰</button></div>${PG.map(x=>h`<button class=${'nav'+(p===x[0]?' on':'')} onClick=${()=>go(x[0])}><span>${x[2]}</span><span class="lb">${x[1]}</span></button>`)}</aside>
+<main class="main"><div class="top"><button class="btn" onClick=${()=>setDr(!dr)}>☰ Menu</button><b>🎄 Christmasly</b></div><div key=${nav.n||p}>${body}</div></main></div>`;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(h`<${App}/>`);
+</script>
+</body>
+</html>
